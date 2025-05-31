@@ -4,7 +4,6 @@ use clap::Parser;
 use satkit::types::Vector3;
 use std::f32::consts::PI;
 use chrono::{DateTime, Datelike, Duration, Timelike, Utc};
-use std::path::Path;
 
 use star_catalog::{hipparcos, Catalog};
 use homedir::my_home;
@@ -119,7 +118,7 @@ fn setup(
     asset_server: Res<AssetServer>,
 ) {
     let loaded_config = config::init();
-    asset_server.load("assets/fonts/FiraMono-Bold.ttf")
+    let font = asset_server.load("assets/fonts/FiraMono-Bold.ttf");
     let altitude_angle_lines_material = materials.add(hexstr2color(&loaded_config.altitude_angle_lines_color));
     let azimuth_angle_lines_material = materials.add(hexstr2color(&loaded_config.azimuth_angle_lines_color));
     let sat_trails_color = hexstr2color(&loaded_config.sat_trails_color);

@@ -1,6 +1,11 @@
+use chrono::Utc;
 use serde::{Deserialize, Serialize};
 use reqwest::Error;
 use homedir::my_home;
+use std::fs::File;
+use std::fs;
+use std::io::Write;
+use chrono::DateTime;
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Config {
@@ -97,12 +102,17 @@ async fn fetch_tle(sat_name: &str) -> Result<String, Error> {
 }
 
 pub async fn update_tle(loaded_config: Config) {
-    let mut path = my_home().unwrap().expect("couldn't get home directory");
-    path.push(".config/ontake/tasogare/TLEDATA");
+    let mut pathtimestamp = my_home().unwrap().expect("couldn't get home directory");
+    pathtimestamp.push(".config/ontake/tasogare/TLEDATA-DATE");
 
-    if path.as_path().exists() {
-        let metadata = std::fs::metadata(path.as_path()).unwrap();
-        if (metadata.modified().expect("unable to read TLEDATA metadata").elapsed().expect("unable to get elapsed time since last TLE update").as_secs() as i64) < loaded_config.tle_update_interval_seconds {
+    if pathtimestamp.as_path().exists() {
+        let now = Utc::now();
+        // Read the timestamp string from the file
+        let contents = fs::read_to_string(&pathtimestamp).unwrap().trim().to_string();
+
+        // Parse the string into a chrono DateTime<Utc>
+        let datetime: DateTime<Utc> = contents.parse().unwrap();
+        if now.signed_duration_since(datetime).num_seconds() < loaded_config.tle_update_interval_seconds {
             return;
         }
     }
@@ -123,7 +133,13 @@ pub async fn update_tle(loaded_config: Config) {
 
     if !failure {
         match std::fs::write(&path, tle_data) {
-            Ok(_) => (),
+            Ok(_) => {
+                    let now = Utc::now().to_rfc3339();
+                    let mut pathtimestamp = my_home().unwrap().expect("couldn't get home directory");
+                    pathtimestamp.push(".config/ontake/tasogare/TLEDATA-DATE");
+                    let mut file = File::create(&pathtimestamp).unwrap();
+                    file.write_all(now.as_bytes()).unwrap();
+            },
             Err(_) => eprintln!("Failed to write TLE data"),
         }
     }
