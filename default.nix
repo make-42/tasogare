@@ -70,8 +70,8 @@ in
 
     postInstall = ''
       # Install assets
-      mkdir -p $out/share/tasogare/assets
-      cp -r ./assets/* $out/share/tasogare/assets/
+      mkdir -p $out/bin/assets
+      cp -r ./assets/* $out/bin/assets/
 
       # Rename original compiled binary
       mv $out/bin/tasogare $out/bin/.tasogare-wrapped

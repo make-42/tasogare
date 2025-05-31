@@ -119,11 +119,7 @@ fn setup(
     asset_server: Res<AssetServer>,
 ) {
     let loaded_config = config::init();
-    let font = if Path::new("../share/tasogare/assets/fonts/FiraMono-Bold.ttf").exists(){
-        asset_server.load("../share/tasogare/assets/fonts/FiraMono-Bold.ttf")
-    } else {
-        asset_server.load("assets/fonts/FiraMono-Bold.ttf")
-    };
+    asset_server.load("assets/fonts/FiraMono-Bold.ttf")
     let altitude_angle_lines_material = materials.add(hexstr2color(&loaded_config.altitude_angle_lines_color));
     let azimuth_angle_lines_material = materials.add(hexstr2color(&loaded_config.azimuth_angle_lines_color));
     let sat_trails_color = hexstr2color(&loaded_config.sat_trails_color);
@@ -162,11 +158,7 @@ fn setup(
         ));
     };
 
-    let s = if Path::new("../share/tasogare/assets/data/hipparcos.json").exists(){
-        std::fs::read_to_string("../share/tasogare/assets/data/hipparcos.json").expect("couldn't read hipparcos.json")
-    } else {
-        std::fs::read_to_string("assets/data/hipparcos.json").expect("couldn't read hipparcos.json")
-    };
+    let s = std::fs::read_to_string("assets/data/hipparcos.json").expect("couldn't read hipparcos.json");
     let mut catalog: Catalog = serde_json::from_str(&s).expect("couldn't parse hipparcos.json");
     catalog.sort();
     catalog.add_names(hipparcos::HIP_ALIASES, true).unwrap();
