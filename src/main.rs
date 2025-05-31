@@ -119,8 +119,8 @@ fn setup(
     asset_server: Res<AssetServer>,
 ) {
     let loaded_config = config::init();
-    let font = if Path::new("../share/assets/fonts/FiraMono-Bold.ttf").exists(){
-        asset_server.load("../share/assets/fonts/FiraMono-Bold.ttf")
+    let font = if Path::new("../share/tasogare/assets/fonts/FiraMono-Bold.ttf").exists(){
+        asset_server.load("../share/tasogare/assets/fonts/FiraMono-Bold.ttf")
     } else {
         asset_server.load("assets/fonts/FiraMono-Bold.ttf")
     };
