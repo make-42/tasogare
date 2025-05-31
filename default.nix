@@ -72,10 +72,8 @@ in
       # Install assets
       mkdir -p $out/bin/assets
       cp -r ./assets/* $out/bin/assets/
-
       # Rename original binary (from cargo)
       mv $out/bin/tasogare $out/bin/.tasogare-wrapped
-
       # Create a wrapper with correct LD_LIBRARY_PATH
       makeWrapper ${pkgs.lib.getBin pkgs.coreutils}/bin/env $out/bin/tasogare \
         --set LD_LIBRARY_PATH ${pkgs.lib.makeLibraryPath deps} \
