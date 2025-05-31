@@ -73,7 +73,7 @@ in
       mkdir -p $out/bin/assets
       cp -r ./assets/* $out/bin/assets/
 
-      # Rename original compiled binary
+      # Rename original binary (from cargo)
       mv $out/bin/tasogare $out/bin/.tasogare-wrapped
 
       # Create a wrapper with correct LD_LIBRARY_PATH
