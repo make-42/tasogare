@@ -7,7 +7,6 @@ use chrono::{DateTime, Datelike, Duration, Timelike, Utc};
 
 use star_catalog::{hipparcos, Catalog};
 use homedir::my_home;
-use std::path::Path;
 
 /// TODO: https://docs.rs/star-catalog/latest/star_catalog/struct.Star.html
 /// https://docs.rs/map_3d/latest/map_3d/fn.eci2aer.html
@@ -158,7 +157,7 @@ fn setup(
         ));
     };
 
-    let s = include_str!("assets/data/hipparcos.json");
+    let s = include_str!("../assets/data/hipparcos.json");
     let mut catalog: Catalog = serde_json::from_str(&s).expect("couldn't parse hipparcos.json");
     catalog.sort();
     catalog.add_names(hipparcos::HIP_ALIASES, true).unwrap();

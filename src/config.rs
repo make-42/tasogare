@@ -112,6 +112,7 @@ pub async fn update_tle(loaded_config: Config) {
 
         // Parse the string into a chrono DateTime<Utc>
         let datetime: DateTime<Utc> = contents.parse().unwrap();
+        println!("Last update: {}", now.signed_duration_since(datetime).num_seconds());
         if now.signed_duration_since(datetime).num_seconds() < loaded_config.tle_update_interval_seconds {
             return;
         }
