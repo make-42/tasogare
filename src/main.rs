@@ -7,6 +7,7 @@ use chrono::{DateTime, Datelike, Duration, Timelike, Utc};
 
 use star_catalog::{hipparcos, Catalog};
 use homedir::my_home;
+use std::path::Path;
 
 /// TODO: https://docs.rs/star-catalog/latest/star_catalog/struct.Star.html
 /// https://docs.rs/map_3d/latest/map_3d/fn.eci2aer.html
