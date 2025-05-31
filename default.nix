@@ -69,6 +69,7 @@ in
     };
 
     postInstall = ''
+      # Install assets
       mkdir -p $out/share/tasogare/assets
       cp -r ./assets/* $out/share/tasogare/assets/
 
