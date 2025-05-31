@@ -48,8 +48,6 @@
 
       devShells.default = pkgs.mkShell {
         packages = deps;
-
-        RUST_SRC_PATH = "${pkgs.rustPlatform.rustLibSrc}";
         LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath deps;
       };
     });

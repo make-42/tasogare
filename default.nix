@@ -25,6 +25,7 @@
       alsa-lib-with-plugins
       vulkan-loader
       wayland
+      git
     ]);
 in
   rustPlatform.buildRustPackage rec {
@@ -44,6 +45,7 @@ in
       [
         pkg-config
         rustPlatform.bindgenHook
+        pkgs.makeWrapper
       ]
       ++ deps;
 
@@ -66,18 +68,16 @@ in
       mainProgram = "tasogare";
     };
 
-    installPhase = ''
-      runHook preInstall
+    postInstall = ''
+      mkdir -p $out/share/tasogare/assets
+      cp -r ./assets/* $out/share/tasogare/assets/
 
-      # Install the binary
-      install -Dm755 target/release/tasogare $out/bin/tasogare
+      # Rename original binary
+      mv $out/bin/tasogare $out/bin/.tasogare-wrapped
 
-      # Copy assets
-      mkdir -p $out/assets
-      cp -r ./assets/* $out/assets/
-
-      runHook postInstall
+      # Create a wrapper with correct LD_LIBRARY_PATH
+      makeWrapper ${pkgs.lib.getBin pkgs.coreutils}/bin/env $out/bin/tasogare \
+        --set LD_LIBRARY_PATH ${pkgs.lib.makeLibraryPath deps} \
+        --add-flags "$out/bin/.tasogare-wrapped"
     '';
-
-    LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath deps;
   }

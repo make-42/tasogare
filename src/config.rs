@@ -34,6 +34,7 @@ pub struct Config {
     pub sat_name_bg_color: String,
     pub star_color: String,
     pub north_color: String,
+    pub tle_update_interval_seconds: i64,
 }
 
 impl ::std::default::Default for Config {
@@ -69,6 +70,7 @@ impl ::std::default::Default for Config {
             sat_name_bg_color: "#000000FF".to_string(),
             star_color: "#FFFFFFDD".to_string(),
             north_color: "#FF0000FF".to_string(),
+            tle_update_interval_seconds: 86400*2,
         }
     }
 }
@@ -95,6 +97,16 @@ async fn fetch_tle(sat_name: &str) -> Result<String, Error> {
 }
 
 pub async fn update_tle(loaded_config: Config) {
+    let mut path = my_home().unwrap().expect("couldn't get home directory");
+    path.push(".config/ontake/tasogare/TLEDATA");
+
+    if path.as_path().exists() {
+        let metadata = std::fs::metadata(path.as_path()).unwrap();
+        if (metadata.modified().expect("unable to read TLEDATA metadata").elapsed().expect("unable to get elapsed time since last TLE update").as_secs() as i64) < loaded_config.tle_update_interval_seconds {
+            return;
+        }
+    }
+
     let mut tle_data = String::new();
 
     let mut failure = false;
