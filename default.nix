@@ -64,7 +64,7 @@ in
       description = "A satellite tracker";
       homepage = "https://github.com/make-42/tasogare";
       license = lib.licenses.mit;
-      maintainers = with lib.maintainers; [];
+      # maintainers = with lib.maintainers; [];
       mainProgram = "tasogare";
     };
 
