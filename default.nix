@@ -69,7 +69,7 @@ in
     };
 
     postInstall = ''
-      # Install assets
+      # Install assets (only the fonts)
       mkdir -p $out/bin/assets
       cp -r ./assets/fonts $out/bin/assets/
       # Rename original binary (from cargo)
