@@ -157,7 +157,11 @@ fn setup(
         ));
     };
 
-    let s = std::fs::read_to_string("assets/data/hipparcos.json").expect("couldn't read hipparcos.json");
+    let s = if Path::new("/bin/assets/data/hipparcos.json").exists() {
+        std::fs::read_to_string("/bin/assets/data/hipparcos.json").expect("couldn't read hipparcos.json")
+    } else {
+        std::fs::read_to_string("assets/data/hipparcos.json").expect("couldn't read hipparcos.json")
+    };
     let mut catalog: Catalog = serde_json::from_str(&s).expect("couldn't parse hipparcos.json");
     catalog.sort();
     catalog.add_names(hipparcos::HIP_ALIASES, true).unwrap();
