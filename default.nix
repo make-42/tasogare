@@ -71,7 +71,7 @@ in
     postInstall = ''
       # Install assets
       mkdir -p $out/bin/assets
-      cp -r ./assets/* $out/bin/assets/
+      cp -r ./assets/fonts $out/bin/assets/
       # Rename original binary (from cargo)
       mv $out/bin/tasogare $out/bin/.tasogare-wrapped
       # Create a wrapper with correct LD_LIBRARY_PATH
